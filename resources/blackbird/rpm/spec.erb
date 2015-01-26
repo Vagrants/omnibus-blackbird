@@ -1,0 +1,118 @@
+# Disable any shell actions, replace them with simply 'true'
+%define __spec_prep_post true
+%define __spec_prep_pre true
+%define __spec_build_post true
+%define __spec_build_pre true
+%define __spec_install_post true
+%define __spec_install_pre true
+%define __spec_clean_post true
+%define __spec_clean_pre true
+
+# Use md5
+%define _binary_filedigest_algorithm 1
+
+# Use gzip payload compression
+%define _binary_payload w9.gzdio
+
+%if 0%{?fedora} >= 15 || 0%{?rhel} >= 7
+%global with_systemd 1
+%else
+%global with_systemd 0
+%endif
+
+%define blackbird_user bbd
+%define blackbird_uid 187
+%define blackbird_group bbd
+%define blackbird_gid 187
+
+# Metadata
+Name: <%= name %>
+Version: <%= version %>
+Release: <%= iteration %>
+Summary:  <%= description.split("\n").first.empty? ? "_" : description.split("\n").first %>
+BuildArch: <%= architecture %>
+AutoReqProv: no
+BuildRoot: %buildroot
+Prefix: /
+Group: <%= category %>
+License: <%= license %>
+Vendor: <%= vendor %>
+Url: <%= homepage %>
+Provides: <%= name %>
+Packager: <%= maintainer %>
+<% dependencies.each do |name| -%>
+Requires: <%= name %>
+<% end -%>
+<% conflicts.each do |name| -%>
+Conflicts: <%= name %>
+<% end -%>
+<% replaces.each do |name| -%>
+Obsoletes: <%= name %>
+<%- end -%>
+<% # RPM rejects descriptions with blank lines (even between content) -%>
+%description
+<%= description.gsub(/^\s*$/, " .") %>
+
+%prep
+# noop
+
+%build
+# noop
+
+%install
+mkdir -m 755 -p %{_topdir}/BUILD/%{_var}/log/blackbird/
+mkdir -m 755 -p %{_topdir}/BUILD/%{_var}/run/blackbird/
+
+%clean
+# noop
+
+%pre
+getent group %{blackbird_group} > /dev/null || \
+    groupadd -r %{blackbird_group} -g %{blackbird_gid}
+getent passwd %{blackbird_user} > /dev/null || \
+    useradd %{blackbird_user} -d /var/lib/%{name} -u %{blackbird_uid} -M -r -s /sbin/nologin -g %{blackbird_group}
+
+%post
+%if 0%{?with_systemd}
+%systemd_post %{name}.service
+%else
+/sbin/chkconfig --add %{name}
+%endif
+
+%preun
+%if 0%{?with_systemd}
+%systemd_preun %{name}.service
+%else
+service %{name} stop > /dev/null 2>&1 || \
+    /sbin/chkconfig --del %{name}
+%endif
+
+%postun
+%if 0%{?with_systemd}
+%systemd_postun_with_restart %{name}.service
+%else
+service %{name} restart > /dev/null 2>&1 || :
+%endif
+
+%files
+%defattr(-,bbd,bbd,-)
+%dir %{_var}/log/%{name}
+%dir %{_var}/run/%{name}
+%dir %{_sysconfdir}/blackbird/conf.d
+
+%defattr(-,<%= user %>,<%= group %>,-)
+/opt/blackbird/*
+
+%config(noreplace) %{_sysconfdir}/blackbird/defaults.cfg
+%config(noreplace, missingok) %{_sysconfdir}/blackbird/conf.d/*.cfg
+%config(noreplace) %{_sysconfdir}/sysconfig/blackbird
+%config(noreplace) %{_sysconfdir}/logrotate.d/blackbird
+
+%{_bindir}/blackbird
+
+%if 0%{?with_systemd}
+%{_unitdir}/%{name}.service
+%else
+%{_sysconfdir}/init.d/%{name}
+%endif
+
