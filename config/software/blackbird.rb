@@ -30,10 +30,4 @@ build do
 
   command "chmod 0755 scripts/blackbird.init"
   copy "scripts/blackbird.init",              "/etc/init.d/blackbird"
-
-  # add dummy file for directory copy to BUILD
-  #mkdir "/var/log/blackbird"
-  #mkdir "/var/run/blackbird"
-  #touch "/var/log/blackbird/blackbird.dummy"
-  #touch "/var/run/blackbird/blackbird.dummy"
 end
