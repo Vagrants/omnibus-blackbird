@@ -9,3 +9,4 @@ bin/*
 local/*
 files/**/cache/
 vendor/cookbooks
+docker/**/output
