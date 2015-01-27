@@ -3,6 +3,20 @@ blackbird Omnibus project
 This project creates full-stack platform-specific packages for
 `blackbird`!
 
+Build package in docker
+-----------------------
+
+```shell
+$ cd omnibus-blackbird/docker/el6/
+$ sudo docker build --rm -t local/blackbird-omnibus .
+$ sudo docker run -v ${PWD}/output:/output local/blackbird-omnibus
+
+(wait...)
+
+$ ls output/
+blackbird-0.4.4-1.x86_64.rpm
+```
+
 Installation
 ------------
 You must have a sane Ruby 1.9+ environment with Bundler installed. Ensure all
