@@ -25,10 +25,12 @@
 %define blackbird_group bbd
 %define blackbird_gid 187
 
+%define release <%= iteration %>%{dist}
+
 # Metadata
 Name: <%= name %>
 Version: <%= version %>
-Release: <%= iteration %>
+Release: %{release}
 Summary:  <%= description.split("\n").first.empty? ? "_" : description.split("\n").first %>
 BuildArch: <%= architecture %>
 AutoReqProv: no
