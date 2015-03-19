@@ -28,5 +28,5 @@ build do
   copy "scripts/blackbird-zabbix_sender.cfg", "/etc/blackbird/conf.d/zabbix_sender.cfg"
   copy "scripts/blackbird.sysconfig",         "/etc/sysconfig/blackbird"
   copy "scripts/blackbird.logrotate",         "/etc/logrotate.d/blackbird"
-  copy "scripts/blackbird.serivce",           "/usr/lib/systemd/system/blackbird.service"
+  copy "scripts/blackbird.service",           "/usr/lib/systemd/system/blackbird.service"
 end
