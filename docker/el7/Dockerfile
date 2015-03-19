@@ -21,4 +21,4 @@ ADD ssh_config /root/.ssh/config
 RUN mkdir /output
 
 CMD git clone https://github.com/Vagrants/omnibus-blackbird.git && \
-cd omnibus-blackbird && bundle install --binstubs && bin/omnibus build blackbird_el6 && cp local/pkg/*rpm /output
+cd omnibus-blackbird && bundle install --binstubs && bin/omnibus build blackbird_el7 && cp local/pkg/*rpm /output
