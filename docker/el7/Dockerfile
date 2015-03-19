@@ -20,5 +20,9 @@ ADD ssh_config /root/.ssh/config
 # create output dir
 RUN mkdir /output
 
+# git setting
+RUN git config --global user.email "vagrants.git@gmail.com"
+RUN git config --global user.name vagrants
+
 CMD git clone https://github.com/Vagrants/omnibus-blackbird.git && \
 cd omnibus-blackbird && bundle install --binstubs && bin/omnibus build blackbird_el7 && cp local/pkg/*rpm /output

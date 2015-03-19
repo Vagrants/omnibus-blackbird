@@ -17,6 +17,7 @@ build do
 
   mkdir "#{install_dir}/plugins"
   mkdir "/etc/blackbird/conf.d"
+  mkdir "/usr/lib/systemd/system"
 
   command "sed -i s'|#!/usr/bin/env python|#!/opt/blackbird/embedded/bin/python|' scripts/blackbird.bin"
   command "chmod 0755 scripts/blackbird.bin"

@@ -27,7 +27,7 @@ end
 install_dir "#{default_root}/#{name}"
 
 # Creates required build directories
-#dependency "preparation"
+dependency "preparation"
 
 # blackbird dependencies/components
 dependency "python"
