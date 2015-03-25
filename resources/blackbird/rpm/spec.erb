@@ -67,7 +67,7 @@ Obsoletes: <%= name %>
 mkdir -m 755 -p %{_topdir}/BUILD/%{_var}/log/blackbird/
 mkdir -m 755 -p %{_topdir}/BUILD/%{_var}/run/blackbird/
 
-find /opt/blackbird/embedded/lib/ -name "*.py[co]" -delete
+find %{_topdir}/BUILD/opt/blackbird/embedded/lib/ -name "*.py[co]" -delete
 
 %clean
 # noop
