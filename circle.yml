@@ -8,14 +8,10 @@ dependencies:
   override:
     - docker info
     - cd ~/omnibus-blackbird/docker/el6 && docker build -t local/blackbird-omnibus-el6 .
-    - cd ~/omnibus-blackbird/docker/el7 && docker build -t local/blackbird-omnibus-el7 .
 
 test:
   override:
     - mkdir ~/output
     - docker run -v ~/output:/output local/blackbird-omnibus-el6
-    - ls -l ~/output
-    - mv ~/output/*rpm $CIRCLE_ARTIFACTS/
-    - docker run -v ${PWD}/output:/output local/blackbird-omnibus-el7
     - ls -l ~/output
     - mv ~/output/*rpm $CIRCLE_ARTIFACTS/
