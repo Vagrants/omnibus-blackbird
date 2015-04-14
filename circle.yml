@@ -1,0 +1,15 @@
+machine:
+  services:
+    - docker
+
+test:
+  override:
+    - cd ~/omnibus-blackbird/docker/el6
+    - docker build -t local/blackbird-omnibus-el6 .
+    - docker run -v ${PWD}/output:/output local/blackbird-omnibus-el6
+    - cd ~/omnibus-blackbird/docker/el7
+    - docker build -t local/blackbird-omnibus-el7 .
+    - docker run -v ${PWD}/output:/output local/blackbird-omnibus-el7
+
+  post:
+    - cp ~/omnibus-blackbird/docker/*/output/*rpm $CIRCLE_ARTIFACTS/
