@@ -1,5 +1,5 @@
 name "blackbird"
-default_version "0.4.4"
+default_version "0.4.5"
 
 dependency "python"
 dependency "python-pip"
@@ -7,6 +7,11 @@ dependency "python-pip"
 version "0.4.4" do
   source url: "https://github.com/Vagrants/blackbird/archive/v#{version}.tar.gz",
          md5: "3fb2aa0fe0df19a47c719a9e6c831e74"
+end
+
+version "0.4.5" do
+  source url: "https://github.com/Vagrants/blackbird/archive/v#{version}.tar.gz",
+         md5: "4484a53e1ec4c42f813ea8b1753165bd"
 end
 
 relative_path "blackbird-#{version}"
