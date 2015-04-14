@@ -2,14 +2,24 @@ machine:
   services:
     - docker
 
+dependencies:
+  cache_directories:
+    - "~/docker"
+  override:
+    - docker info
+    - cd ~/omnibus-blackbird/docker/el6
+    - ls -l
+    - docker build -t local/blackbird-omnibus-el6 .
+    - cd ~/omnibus-blackbird/docker/el7
+    - ls -l
+    - docker build -t local/blackbird-omnibus-el7 .
+
 test:
   override:
-    - cd ~/omnibus-blackbird/docker/el6
-    - docker build -t local/blackbird-omnibus-el6 .
-    - docker run -v ${PWD}/output:/output local/blackbird-omnibus-el6
-    - cd ~/omnibus-blackbird/docker/el7
-    - docker build -t local/blackbird-omnibus-el7 .
+    - mkdir ~/output
+    - docker run -v ~/output:/output local/blackbird-omnibus-el6
+    - ls -l ~/output
+    - mv ~/output/*rpm $CIRCLE_ARTIFACTS/
     - docker run -v ${PWD}/output:/output local/blackbird-omnibus-el7
-
-  post:
-    - cp ~/omnibus-blackbird/docker/*/output/*rpm $CIRCLE_ARTIFACTS/
+    - ls -l ~/output
+    - mv ~/output/*rpm $CIRCLE_ARTIFACTS/
